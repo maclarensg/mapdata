@@ -23,7 +23,7 @@ by providing the path to value string.
         log.Fatal(err)
     }
 
-    v, err := myMap("a.a1")
+    v, err := myMap.GetPath("a.a1")
     # v is `alpha`
     # err is `nil`
 ```
