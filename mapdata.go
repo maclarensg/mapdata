@@ -68,6 +68,7 @@ func PathToArray(path string) []string {
 	return strings.Split(path, ".")
 }
 
+// Return A Value of string by a given path
 func (d *MapData) GetPathValueString(path string) (string, error) {
 	value, err := d.GetPath(path)
 	if err != nil {
@@ -79,6 +80,7 @@ func (d *MapData) GetPathValueString(path string) (string, error) {
 	return value.(string), nil
 }
 
+// Return A Value of *MapData by a given path
 func (d *MapData) GetPathValueMap(path string) (*MapData, error) {
 	value, err := d.GetPath(path)
 	if err != nil {
@@ -91,6 +93,7 @@ func (d *MapData) GetPathValueMap(path string) (*MapData, error) {
 	return &wrapper, nil
 }
 
+// Return A Value of  []*MapData by a given path
 func (d *MapData) GetPathValueListMap(path string) (list []*MapData, err error) {
 	value, err := d.GetPath(path)
 	if err != nil {
