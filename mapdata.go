@@ -67,3 +67,44 @@ func (d *MapData) get(arr []string) (interface{}, error) {
 func PathToArray(path string) []string {
 	return strings.Split(path, ".")
 }
+
+func (d *MapData) GetPathValueString(path string) (string, error) {
+	value, err := d.GetPath(path)
+	if err != nil {
+		return "", err
+	}
+	if reflect.TypeOf(value).Kind() != reflect.String {
+		return "", errors.New(fmt.Sprintf("Value return is not a string. %T", value))
+	}
+	return value.(string), nil
+}
+
+func (d *MapData) GetPathValueMap(path string) (*MapData, error) {
+	value, err := d.GetPath(path)
+	if err != nil {
+		return nil, err
+	}
+	if reflect.TypeOf(value).Kind() != reflect.Map {
+		return nil, errors.New(fmt.Sprintf("Value return is not a map. %T", value))
+	}
+	wrapper := MapData(value.(map[string]interface{}))
+	return &wrapper, nil
+}
+
+func (d *MapData) GetPathValueListMap(path string) (list []*MapData, err error) {
+	value, err := d.GetPath(path)
+	if err != nil {
+		return []*MapData{}, err
+	}
+	if reflect.TypeOf(value).Kind() != reflect.Slice {
+		return []*MapData{}, errors.New(fmt.Sprintf("Value return is not a map. %T", value))
+	}
+	for _, el := range value.([]interface{}) {
+		if reflect.TypeOf(el).Kind() != reflect.Map {
+			return []*MapData{}, errors.New(fmt.Sprintf("The value in the list is not a map. %T", el))
+		}
+		wrapper := MapData(el.(map[string]interface{}))
+		list = append(list, &wrapper)
+	}
+	return list, nil
+}
