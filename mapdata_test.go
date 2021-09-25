@@ -6,6 +6,34 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var mockTestMap = map[string]interface{}{
+	"a": map[string]interface{}{
+		"a1": "alfa",
+	},
+	"b": []interface{}{
+		map[string]interface{}{
+			"b1": "beta1",
+		},
+		map[string]interface{}{
+			"b2": "beta2",
+		},
+		map[string]interface{}{
+			"b3": "beta3",
+		},
+		map[string]interface{}{
+			"b4": "beta4",
+		},
+	},
+	"c": []interface{}{
+		"c1",
+		"c2",
+		"c3",
+		"c4",
+	},
+	"d": "delta",
+	"e": 5,
+}
+
 func TestNewMapData(t *testing.T) {
 	assert := assert.New(t)
 	mapTest := map[string]interface{}{
@@ -31,19 +59,11 @@ func TestPathToArray(t *testing.T) {
 }
 
 func TestGetFromMapData(t *testing.T) {
-	mapTest := map[string]interface{}{
-		"a": map[string]interface{}{
-			"a1": "alfa",
-		},
-		"b": "beta",
-		"c": "charlie",
-		"d": "delta",
-	}
 	assert := assert.New(t)
 	var d interface{}
 	var err error
 
-	res, err := NewMapData(mapTest)
+	res, err := NewMapData(mockTestMap)
 	assert.NotNil(res)
 	assert.NoError(err)
 
@@ -61,19 +81,12 @@ func TestGetFromMapData(t *testing.T) {
 }
 
 func TestGetPathFromMapData(t *testing.T) {
-	mapTest := map[string]interface{}{
-		"a": map[string]interface{}{
-			"a1": "alfa",
-		},
-		"b": "beta",
-		"c": "charlie",
-		"d": "delta",
-	}
+
 	assert := assert.New(t)
 	var d interface{}
 	var err error
 
-	res, err := NewMapData(mapTest)
+	res, err := NewMapData(mockTestMap)
 	assert.NotNil(res)
 	assert.NoError(err)
 
@@ -88,38 +101,11 @@ func TestGetPathFromMapData(t *testing.T) {
 
 func TestGetPathValueString(t *testing.T) {
 	assert := assert.New(t)
-	mapTest := map[string]interface{}{
-		"a": map[string]interface{}{
-			"a1": "alfa",
-		},
-		"b": []interface{}{
-			map[string]interface{}{
-				"b1": "beta1",
-			},
-			map[string]interface{}{
-				"b2": "beta2",
-			},
-			map[string]interface{}{
-				"b3": "beta3",
-			},
-			map[string]interface{}{
-				"b4": "beta4",
-			},
-		},
-		"c": []interface{}{
-			"c1",
-			"c2",
-			"c3",
-			"c4",
-		},
-		"d": "delta",
-		"e": 5,
-	}
-	res, err := NewMapData(mapTest)
+	res, err := NewMapData(mockTestMap)
 	assert.NoError(err)
 	val1, err := res.GetPathValueString("d")
 	assert.NoError(err)
-	assert.Equal(mapTest["d"], val1)
+	assert.Equal(mockTestMap["d"], val1)
 	val2, err := res.GetPathValueString("e")
 	assert.Error(err)
 	assert.Equal("", val2)
@@ -139,34 +125,7 @@ func TestGetPathValueString(t *testing.T) {
 
 func TestGetPathValueMap(t *testing.T) {
 	assert := assert.New(t)
-	mapTest := map[string]interface{}{
-		"a": map[string]interface{}{
-			"a1": "alfa",
-		},
-		"b": []interface{}{
-			map[string]interface{}{
-				"b1": "beta1",
-			},
-			map[string]interface{}{
-				"b2": "beta2",
-			},
-			map[string]interface{}{
-				"b3": "beta3",
-			},
-			map[string]interface{}{
-				"b4": "beta4",
-			},
-		},
-		"c": []interface{}{
-			"c1",
-			"c2",
-			"c3",
-			"c4",
-		},
-		"d": "delta",
-		"e": 5,
-	}
-	res, err := NewMapData(mapTest)
+	res, err := NewMapData(mockTestMap)
 	assert.NoError(err)
 	val1, err := res.GetPathValueMap("a")
 	assert.NoError(err)
@@ -190,38 +149,12 @@ func TestGetPathValueMap(t *testing.T) {
 
 func TestGetPathValueListMap(t *testing.T) {
 	assert := assert.New(t)
-	mapTest := map[string]interface{}{
-		"a": map[string]interface{}{
-			"a1": "alfa",
-		},
-		"b": []interface{}{
-			map[string]interface{}{
-				"b1": "beta1",
-			},
-			map[string]interface{}{
-				"b2": "beta2",
-			},
-			map[string]interface{}{
-				"b3": "beta3",
-			},
-			map[string]interface{}{
-				"b4": "beta4",
-			},
-		},
-		"c": []interface{}{
-			"c1",
-			"c2",
-			"c3",
-			"c4",
-		},
-		"d": "delta",
-		"e": 5,
-	}
-	res, err := NewMapData(mapTest)
+
+	res, err := NewMapData(mockTestMap)
 	assert.NoError(err)
 	val1, err := res.GetPathValueListMap("b")
 	assert.NoError(err)
-	assert.Equal(len(mapTest["b"].([]interface{})), len(val1))
+	assert.Equal(len(mockTestMap["b"].([]interface{})), len(val1))
 	val2, err := res.GetPathValueListMap("a")
 	assert.Error(err)
 	assert.Empty(val2)
